@@ -150,7 +150,8 @@ namespace Microsoft.Azure.Commands.Insights.ActivityLogAlert
                         resourceGroupName: out resourceGroupName,
                         activityLogAlertName: out activityLogAlertName);
 
-                    requestBody = this.UpdateActivityLogAlertPsResource(this.InputObject);
+                    var activityLogAlertResource = this.ConvertToActivityLogAlertResource(this.InputObject);
+                    requestBody = UpdateActivityLogAlertResource(activityLogAlertResource);
                 }
                 else if (this.MyInvocation.BoundParameters.ContainsKey("ResourceId") || !string.IsNullOrWhiteSpace(this.ResourceId))
                 {
@@ -205,7 +206,7 @@ namespace Microsoft.Azure.Commands.Insights.ActivityLogAlert
             }
         }
 
-        private ActivityLogAlertResource UpdateActivityLogAlertPsResource(PSActivityLogAlertResource inputObject)
+        private ActivityLogAlertResource ConvertToActivityLogAlertResource(PSActivityLogAlertResource inputObject)
         {
             var activityLogAlertResource = new ActivityLogAlertResource(
                 inputObject.Location,
@@ -219,7 +220,7 @@ namespace Microsoft.Azure.Commands.Insights.ActivityLogAlert
                 inputObject.Enabled,
                 inputObject.Description);
 
-            return UpdateActivityLogAlertResource(activityLogAlertResource);
+            return activityLogAlertResource;
         }
 
         private ActivityLogAlertResource UpdateActivityLogAlertResource(ActivityLogAlertResource requestBody)
